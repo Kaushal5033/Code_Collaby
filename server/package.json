@@ -5,10 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js",
-    "run dev": "nodemon index.js"
+    "dev": "nodemon index.js"
   },
-  "author": "Yadvendra Shukla",
+  "author": "Kaushal Rai ",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.7.7",
