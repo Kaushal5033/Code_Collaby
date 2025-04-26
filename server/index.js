@@ -27,9 +27,20 @@ const languageConfig = {
   r: { versionIndex: "3" },
 };
 
-// Enable CORS for your frontend on Vercel
+// Enable CORS for both production and development
+const allowedOrigins = [
+  "https://code-collaby.vercel.app",
+  "http://localhost:3000"
+];
+
 app.use(cors({
-  origin: "https://code-collaby.vercel.app",
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
 }));
 
@@ -43,10 +54,12 @@ app.get("/", (req, res) => {
 
 const io = new Server(server, {
   cors: {
-    origin: "https://code-collaby.vercel.app",
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
     credentials: true,
   },
+  pingTimeout: 60000,
+  pingInterval: 25000,
 });
 
 const userSocketMap = {};
@@ -114,4 +127,7 @@ app.post("/compile", async (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server is running on port ${PORT}`);
+  console.log(`CORS enabled for origins: ${allowedOrigins.join(', ')}`);
+});
