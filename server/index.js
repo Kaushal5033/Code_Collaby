@@ -60,6 +60,11 @@ const io = new Server(server, {
   },
   pingTimeout: 60000,
   pingInterval: 25000,
+  transports: ['websocket', 'polling'],
+  allowEIO3: true,
+  connectTimeout: 45000,
+  maxHttpBufferSize: 1e8,
+  path: '/socket.io/',
 });
 
 const userSocketMap = {};
